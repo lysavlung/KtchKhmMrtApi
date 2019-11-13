@@ -16,7 +16,9 @@ namespace KtchKhmMrtFileApi.Controllers
         [HttpGet("{fileId}")]
         public ActionResult<string> GetGoogleImage(string fileId)
         {
-            string filePath = fileId;
+            string apiKey = Properties.Resources.gdrive_api_key;
+            string baseUrl = Properties.Resources.gdrive_base_url;
+            string filePath = string.Format(baseUrl, fileId, apiKey);
 
             return filePath;
         }

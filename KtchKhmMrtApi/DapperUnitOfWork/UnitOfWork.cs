@@ -4,7 +4,9 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using KtchKhmMrtApi.Entities;
 using KtchKhmMrtApi.Repositories;
+using KtchKhmMrtDataApi.Repositories;
 
 namespace KtchKhmMrtApi.DapperUnitOfWork
 {
@@ -12,8 +14,8 @@ namespace KtchKhmMrtApi.DapperUnitOfWork
     {
         private IDbConnection _connection;
         private IDbTransaction _transaction;
-        public IProductRepository _productRepository;
-        public IProductDisplayRepository _productDisplayRepository;
+        private ProductRepository _productRepository;
+        private IProductDisplayRepository _productDisplayRepository;
         private bool _disposed;
 
         public UnitOfWork(string connectionString)
@@ -23,7 +25,7 @@ namespace KtchKhmMrtApi.DapperUnitOfWork
             _transaction = _connection.BeginTransaction();
         }
 
-        public IProductRepository ProductRepository
+        public ProductRepository ProductRepository
         {
             get
             {
@@ -61,6 +63,7 @@ namespace KtchKhmMrtApi.DapperUnitOfWork
         private void resetRepositories()
         {
             _productRepository = null;
+            _productDisplayRepository = null;
         }
 
         public void Dispose()

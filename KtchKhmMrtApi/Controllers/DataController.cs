@@ -14,17 +14,20 @@ namespace KtchKhmMrtApi.Controllers
     [ApiController]
     public class DataController : ControllerBase
     {
+        IUnitOfWork _uow;
+
+        public DataController(IUnitOfWork uow)
+        {
+            this._uow = uow;
+        }
         // Retrieve a list of ProductDisplay
         // GET: api/data/
         [HttpGet]
-        public IEnumerable<ProductDisplay> GetListProductDisplay()
+        public ActionResult<IEnumerable<ProductDisplay>> GetListProductDisplay()
         {
             var list = new List<ProductDisplay>();
 
-            using(var uow = new UnitOfWork(DbCommon.SQL_CONNECTION_STRING))
-            {
-                list = (List<ProductDisplay>)uow.ProductDisplayRepository.findAllProductDisplay();
-            }
+            list = (List<ProductDisplay>)_uow.ProductDisplayRepository.findAllProductDisplay();
 
             return list;
         }
@@ -37,10 +40,7 @@ namespace KtchKhmMrtApi.Controllers
         {
             var productDisplay = default(ProductDisplay);
 
-            using(var uow = new UnitOfWork(DbCommon.SQL_CONNECTION_STRING))
-            {
-                productDisplay = uow.ProductDisplayRepository.findProductDisplayByCode(code);
-            }
+            productDisplay = _uow.ProductDisplayRepository.findProductDisplayByCode(code);
 
             return productDisplay;
         }
@@ -52,13 +52,10 @@ namespace KtchKhmMrtApi.Controllers
         {
             int affectedRow = 0;
 
-            using(var uow = new UnitOfWork(DbCommon.SQL_CONNECTION_STRING))
-            {
-                uow.ProductRepository.Add(item);
-                uow.Commit();
+            _uow.ProductRepository.Add(item);
+            _uow.Commit();
 
-                affectedRow = 1;
-            }
+            affectedRow = 1;
 
             return affectedRow;
         }
@@ -70,13 +67,10 @@ namespace KtchKhmMrtApi.Controllers
         {
             int affectedRow = 0;
 
-            using (var uow = new UnitOfWork(DbCommon.SQL_CONNECTION_STRING))
-            {
-                uow.ProductRepository.Update(item);
-                uow.Commit();
+            _uow.ProductRepository.Update(item);
+            _uow.Commit();
 
-                affectedRow = 1;
-            }
+            affectedRow = 1;
 
             return affectedRow;
         }

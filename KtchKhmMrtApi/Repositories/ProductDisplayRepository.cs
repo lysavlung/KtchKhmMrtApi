@@ -8,7 +8,7 @@ using KtchKhmMrtApi.Entities;
 
 namespace KtchKhmMrtApi.Repositories
 {
-    internal class ProductDisplayRepository : RepositoryBase, IProductDisplayRepository
+    public class ProductDisplayRepository : RepositoryBase, IProductDisplayRepository
     {
         public ProductDisplayRepository(IDbTransaction transaction) : base(transaction)
         {
